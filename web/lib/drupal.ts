@@ -16,6 +16,9 @@ export const drupal = new NextDrupal(baseUrl, {
 
 // Wrap getResourceCollectionPathSegments to prevent build failures when
 // the Drupal backend is unavailable (e.g. race condition on first deploy).
+// This guards generateStaticParams() in app/[...slug]/page.tsx — if Drupal
+// returns a 502 during "Collecting page data", Next.js skips static generation
+// and renders those pages on-demand instead of crashing the build.
 const _getResourceCollectionPathSegments =
   drupal.getResourceCollectionPathSegments.bind(drupal)
 drupal.getResourceCollectionPathSegments = async function (
