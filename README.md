@@ -61,3 +61,26 @@ ddev drush php:script scripts/setup-products.php
 Manage products at **Drupal admin → Content** (`/admin/content`), filter by type **Product**.
 
 The Artisan Market demo at http://localhost:3000/demo/artisan-market pulls products from Drupal via JSON:API.
+
+## Database dump (hosting)
+
+A gzipped database snapshot lives at the project root:
+
+- `drupal-database.sql.gz` — full Drupal DB (content, products, config in DB)
+
+### Restore locally (DDEV)
+
+```bash
+cd drupal
+ddev start
+ddev import-db --file=../drupal-database.sql.gz
+```
+
+### Re-export after changes
+
+```bash
+cd drupal
+ddev export-db --file=../drupal-database.sql.gz
+```
+
+On a remote host, import the same file into MariaDB/MySQL after `composer install` and Drupal install scaffolding. Point `web/.env.local` at your Drupal JSON:API URL.
