@@ -1,0 +1,23 @@
+# OS / IDE
+.DS_Store
+.idea/
+.vscode/
+
+# Next.js
+web/node_modules/
+web/.next/
+web/out/
+web/.env*.local
+
+# Drupal (Composer-managed — reinstall with composer install)
+drupal/vendor/
+drupal/web/core/
+drupal/web/modules/contrib/
+drupal/web/themes/contrib/
+drupal/web/profiles/contrib/
+drupal/web/libraries/
+
+# Drupal local / generated
+drupal/web/sites/default/files/
+drupal/web/sites/default/settings.php
+drupal/web/sites/default/settings.ddev.php
