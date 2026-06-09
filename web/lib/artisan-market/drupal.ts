@@ -1,9 +1,9 @@
 import { drupal } from "@/lib/drupal"
 import type { ArtisanProduct } from "@/lib/artisan-market/products"
 import { artisanProducts as fallbackProducts } from "@/lib/artisan-market/products"
-import type { DrupalNode } from "next-drupal"
+import type { DrupalNode, JsonApiResource } from "next-drupal"
 
-export interface DrupalProductNode extends Omit<DrupalNode, 'path'> {
+export interface DrupalProductNode extends Omit<DrupalNode, 'path'>, JsonApiResource {
   body?: {
     summary?: string | null
     processed?: string | null
