@@ -104,5 +104,5 @@ export async function getArtisanProductBySlug(
 }
 
 export function getCategoriesFromProducts(products: ArtisanProduct[]): string[] {
-  return [...new Set(products.map((p) => p.category))].sort()
+  return Array.from(new Set(products.map((p) => p.category))).sort()
 }
