@@ -3,7 +3,7 @@ import type { ArtisanProduct } from "@/lib/artisan-market/products"
 import { artisanProducts as fallbackProducts } from "@/lib/artisan-market/products"
 import type { DrupalNode } from "next-drupal"
 
-export interface DrupalProductNode extends DrupalNode {
+export interface DrupalProductNode extends Omit<DrupalNode, 'path'> {
   body?: {
     summary?: string | null
     processed?: string | null
