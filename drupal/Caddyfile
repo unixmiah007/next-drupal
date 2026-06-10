@@ -1,6 +1,7 @@
 {
 	frankenphp
 	order php_server before file_server
+	admin off
 }
 
 :{$PORT:80} {
