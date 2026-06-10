@@ -10,6 +10,14 @@
  * using environment variables provided by Railway.
  */
 
+// Define $app_root and $site_path if not already set by Drupal's bootstrap
+if (!isset($app_root)) {
+  $app_root = dirname(dirname(dirname(__DIR__)));
+}
+if (!isset($site_path)) {
+  $site_path = 'sites/default';
+}
+
 /**
  * Include the default settings file.
  */
