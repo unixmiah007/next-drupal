@@ -43,5 +43,5 @@ EXPOSE ${PORT:-80}
 # Copy Caddyfile for FrankenPHP configuration
 COPY Caddyfile /etc/caddy/Caddyfile
 
-# Start FrankenPHP using the Caddyfile (reads $PORT from environment)
-CMD ["frankenphp", "run", "--config", "/etc/caddy/Caddyfile"]
+# Start FrankenPHP — override SERVER_NAME at runtime so it binds to Railway's PORT
+CMD ["sh", "-c", "SERVER_NAME=:${PORT:-80} frankenphp run --config /etc/caddy/Caddyfile"]
