@@ -40,6 +40,8 @@ RUN chmod +x /app/scripts/install-drupal.sh
 # Expose the port Railway provides
 EXPOSE ${PORT:-80}
 
-# Start FrankenPHP on Railway's assigned PORT
-# SERVER_NAME tells Caddy which address to listen on (--listen alone is ignored by php-server)
-CMD ["sh", "-c", "SERVER_NAME=:${PORT:-80} frankenphp php-server --root /app/web"]
+# Copy Caddyfile for FrankenPHP configuration
+COPY Caddyfile /etc/caddy/Caddyfile
+
+# Start FrankenPHP using the Caddyfile (reads $PORT from environment)
+CMD ["frankenphp", "run", "--config", "/etc/caddy/Caddyfile"]
