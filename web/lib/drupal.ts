@@ -14,15 +14,17 @@ export const drupal = new NextDrupal(baseUrl, {
   // debug: true,
 })
 
-// Wrap getResourceCollectionPathSegments to prevent build failures when
-// the Drupal backend is unavailable (e.g. race condition on first deploy).
-const _getResourceCollectionPathSegments =
-  drupal.getResourceCollectionPathSegments.bind(drupal)
+// Patch getResourceCollectionPathSegments on the drupal instance so that
+// generateStaticParams() in [...slug]/page.tsx never crashes the build when
+// Drupal is unavailable (e.g. race condition on first deploy). Returning an
+// empty array tells Next.js to skip pre-rendering those paths and serve them
+// on-demand instead.
+const _orig = drupal.getResourceCollectionPathSegments.bind(drupal)
 drupal.getResourceCollectionPathSegments = async function (
-  ...args: Parameters<typeof _getResourceCollectionPathSegments>
+  ...args: Parameters<typeof _orig>
 ) {
   try {
-    return await _getResourceCollectionPathSegments(...args)
+    return await _orig(...args)
   } catch (error) {
     console.error(
       "Failed to fetch resource path segments from Drupal:",
