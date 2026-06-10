@@ -40,5 +40,5 @@ RUN chmod +x /app/scripts/install-drupal.sh
 # Expose the port Railway provides
 EXPOSE ${PORT:-80}
 
-# Start FrankenPHP — SERVER_NAME is set at runtime so Railway's $PORT is used
-CMD ["sh", "-c", "SERVER_NAME=:${PORT:-80} frankenphp php-server --root /app/web"]
+# Start FrankenPHP on Railway's assigned PORT
+CMD ["sh", "-c", "frankenphp php-server --root /app/web --listen :${PORT:-80}"]
