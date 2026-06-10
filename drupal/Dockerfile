@@ -41,4 +41,5 @@ RUN chmod +x /app/scripts/install-drupal.sh
 EXPOSE ${PORT:-80}
 
 # Start FrankenPHP on Railway's assigned PORT
-CMD ["sh", "-c", "frankenphp php-server --root /app/web --listen :${PORT:-80}"]
+# SERVER_NAME tells Caddy which address to listen on (--listen alone is ignored by php-server)
+CMD ["sh", "-c", "SERVER_NAME=:${PORT:-80} frankenphp php-server --root /app/web"]
