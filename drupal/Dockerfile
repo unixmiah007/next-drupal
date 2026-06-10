@@ -9,6 +9,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libzip-dev \
     unzip \
     git \
+    default-mysql-client \
     && docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
     && docker-php-ext-install -j$(nproc) gd pdo pdo_mysql opcache zip \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
@@ -32,6 +33,9 @@ COPY . .
 
 # Run any post-install scripts
 RUN composer run-script post-install-cmd --no-interaction || true
+
+# Ensure the install script is executable
+RUN chmod +x /app/scripts/install-drupal.sh
 
 # Expose the port Railway provides
 EXPOSE ${PORT:-80}
