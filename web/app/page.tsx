@@ -15,16 +15,24 @@ export const metadata: Metadata = {
 }
 
 export default async function Home() {
-  const nodes = await drupal.getResourceCollection<DrupalNode[]>("node--note", {
-    params: {
-      "filter[status]": 1,
-      "fields[node--note]": "title,path,body",
-      sort: "title",
-    },
-    next: {
-      revalidate: 3600,
-    },
-  })
+  let nodes: DrupalNode[] = []
+
+  try {
+    const result = await drupal.getResourceCollection<DrupalNode[]>("node--note", {
+      params: {
+        "filter[status]": 1,
+        "fields[node--note]": "title,path,body",
+        sort: "title",
+      },
+      next: {
+        revalidate: 3600,
+      },
+    })
+    nodes = result ?? []
+  } catch (error) {
+    console.error("Failed to fetch featured notes from Drupal:", error)
+    // nodes remains empty array, page renders without featured notes
+  }
 
   return (
     <>
@@ -32,7 +40,7 @@ export default async function Home() {
       <ServicesSection />
       <TechStackSection />
       <ProcessSection />
-      <FeaturedNotes nodes={nodes ?? []} />
+      <FeaturedNotes nodes={nodes} />
       <CtaBanner />
     </>
   )
