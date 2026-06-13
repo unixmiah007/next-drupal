@@ -37,8 +37,14 @@ RUN composer run-script post-install-cmd --no-interaction || true
 # Ensure the install script is executable
 RUN chmod +x /app/scripts/install-drupal.sh
 
+# Clear the base image's hardcoded SERVER_NAME=:80 so the Caddyfile controls port binding
+ENV SERVER_NAME=
+
+# Copy Caddyfile to the default Caddy config location
+COPY Caddyfile /etc/caddy/Caddyfile
+
 # Expose the port Railway provides
 EXPOSE ${PORT:-80}
 
-# Start FrankenPHP — override SERVER_NAME at runtime so it binds to Railway's PORT
-CMD ["sh", "-c", "SERVER_NAME=:$PORT frankenphp php-server --root /app/web"]
+# Start FrankenPHP using the Caddyfile (which binds to :{$PORT:80})
+CMD ["frankenphp", "run", "--config", "/etc/caddy/Caddyfile"]
